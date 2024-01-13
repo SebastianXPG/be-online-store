@@ -7,10 +7,10 @@ export function mapProductEntityToDto(entity: Product): ProductDto {
   dto.id = entity.idProduct;
   dto.name = entity.name;
   dto.price = entity.price;
-  dto.categoryId = entity.category.idCategory;
+  dto.categoryId = entity.category?.idCategory;
   dto.description = entity.description;
   dto.code = entity.productCode;
-  dto.category = entity.category.name;
+  dto.category = entity.category?.name;
   dto.count = entity.count;
   dto.img = entity.img;
 
@@ -26,7 +26,6 @@ export function mapProductDtoToEntity(dto: ProductDto): Product {
   entity.description = dto.description;
   entity.productCode = dto.code;
   entity.img = dto.img;
-
   entity.category = new Category();
   entity.category.idCategory = dto.categoryId;
 

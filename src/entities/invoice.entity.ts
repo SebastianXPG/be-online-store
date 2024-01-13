@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Product } from './product.entity';
 
@@ -13,13 +7,13 @@ export class Invoice {
   @PrimaryGeneratedColumn('uuid')
   idInvoice: string;
 
-  @OneToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, (user) => user.invoices)
   @JoinColumn({ name: 'idUser' })
   user: User;
 
-  @OneToOne(() => Product, { cascade: true })
+  @ManyToOne(() => Product, (product) => product.invoices)
   @JoinColumn({ name: 'idProduct' })
-  product: Product;
+  products: Product[];
 
   @Column({ nullable: false })
   quantity: number;

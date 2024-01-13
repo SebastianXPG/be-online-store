@@ -2,10 +2,12 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
+  ManyToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
 import { Category } from './Category.entity';
+import { Invoice } from './invoice.entity';
 
 @Entity('PRODUCTS')
 export class Product {
@@ -18,10 +20,6 @@ export class Product {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   price: number;
 
-  @OneToOne(() => Category, { cascade: true })
-  @JoinColumn({ name: 'idCategory' })
-  category: Category;
-
   @Column({ nullable: false })
   description: string;
 
@@ -33,4 +31,12 @@ export class Product {
 
   @Column({ nullable: false })
   img: string;
+
+  @ManyToOne(() => Category, (category) => category.products)
+  @JoinColumn({ name: 'IdCategory' })
+  category: Category;
+
+  @OneToMany(() => Invoice, (invoice) => invoice.products)
+  @JoinColumn({ name: 'idInvoice' })
+  invoices: Invoice[];
 }

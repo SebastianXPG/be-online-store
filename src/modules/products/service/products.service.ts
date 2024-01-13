@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ProductPersiatences } from '../persistences/products.persistences';
 import { ProductDto } from '../dto/products-dto';
 import { Product } from 'src/entities/product.entity';
@@ -29,6 +29,23 @@ export class ProductsService {
       return mapProductEntityToDto(product);
     }
     return null;
+  }
+
+  async findProductsById(productIds: string[]): Promise<Product[]> {
+    const products: Product[] =
+      await this.productPersistences.findProductsById(productIds);
+    if (products.length !== productIds.length) {
+      const foundProductsId = products.map((product) => product.idProduct);
+      const notFoundProductsId = productIds.filter(
+        (id) => !foundProductsId.includes(id),
+      );
+      throw new NotFoundException(
+        'Productos con id: [' +
+          notFoundProductsId.join(', ') +
+          '] no encontrados',
+      );
+    }
+    return products;
   }
 
   async create(productDto: ProductDto): Promise<ProductDto> {

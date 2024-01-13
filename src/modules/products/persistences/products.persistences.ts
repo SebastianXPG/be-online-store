@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../../../entities/product.entity';
-import { Repository } from 'typeorm';
-import { Category } from 'src/entities/Category.entity';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductPersiatences {
@@ -11,12 +10,17 @@ export class ProductPersiatences {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-    @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async findAll(): Promise<Product[]> {
     return await this.productRepository.find({ relations: ['category'] });
+  }
+
+  async findProductsById(productIds: string[]): Promise<Product[]> {
+    return await this.productRepository.find({
+      where: { idProduct: In(productIds) },
+      relations: ['category'],
+    });
   }
 
   async findOne(idProduct: string): Promise<Product> {
