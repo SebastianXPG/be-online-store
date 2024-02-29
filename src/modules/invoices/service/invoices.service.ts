@@ -21,7 +21,7 @@ export class InvoicesService {
     private invoicePersistences: InvoicePersiatences,
     private productService: ProductsService,
     // private invoiceProductService: InvoiceProductService
-  ) { }
+  ) {}
 
   async getInvoices(): Promise<InvoiceDto[]> {
     const invoices: Invoice[] = await this.invoicePersistences.findAll();

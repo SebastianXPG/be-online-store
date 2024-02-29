@@ -8,6 +8,7 @@ export function mapUserEntityToDto(entity: User): UserDto {
   dto.email = entity.email;
   dto.phone = entity.phone;
   dto.identification = entity.identification;
+  dto.rol = entity.role;
 
   return dto;
 }
@@ -19,6 +20,7 @@ export function mapUserDtoToEntity(dto: UserDto): User {
   entity.email = dto.email;
   entity.phone = dto.phone;
   entity.identification = dto.identification;
+  entity.role = dto.rol;
 
   return entity;
 }

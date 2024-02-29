@@ -19,4 +19,9 @@ export class ProductDto {
   count: number;
   @ApiProperty()
   img: string;
+
+  // Agrega un constructor para inicializar las propiedades si es necesario
+  constructor(data: Partial<ProductDto>) {
+    Object.assign(this, data);
+  }
 }

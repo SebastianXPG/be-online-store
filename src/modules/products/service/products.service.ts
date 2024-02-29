@@ -48,21 +48,31 @@ export class ProductsService {
     return products;
   }
 
-  async create(productDto: ProductDto): Promise<ProductDto> {
-    const productDtoFound: ProductDto = await this.getProduct(productDto.id);
-    if (productDtoFound) {
-      return productDtoFound;
+  async create(productsDtoList: ProductDto[]): Promise<ProductDto[]> {
+    const createdProducts: ProductDto[] = [];
+
+    for (const productDto of productsDtoList) {
+      const productDtoFound: ProductDto = await this.getProduct(productDto.id);
+
+      if (!productDtoFound) {
+        const productEntity: Product = mapProductDtoToEntity(productDto);
+        productEntity.idProduct = randomUUID();
+        const productCreated: Product =
+          await this.productPersistences.create(productEntity);
+
+        if (productCreated) {
+          const productDtoCreated: ProductDto =
+            mapProductEntityToDto(productCreated);
+          createdProducts.push(productDtoCreated);
+        }
+      } else {
+        // Si el producto ya existe, podrías manejarlo de alguna manera, por ejemplo, ignorarlo o actualizarlo
+        // Aquí lo estoy ignorando y continuando con los demás productos
+        console.warn(`Producto con ID ${productDto.id} ya existe. Ignorado.`);
+      }
     }
-    const productEntity: Product = mapProductDtoToEntity(productDto);
-    productEntity.idProduct = randomUUID();
-    const productCreated: Product =
-      await this.productPersistences.create(productEntity);
-    if (productCreated) {
-      const productDtoCreated: ProductDto =
-        mapProductEntityToDto(productCreated);
-      return productDtoCreated;
-    }
-    return null;
+
+    return createdProducts;
   }
 
   async update(id: string, productDto: ProductDto): Promise<ProductDto> {

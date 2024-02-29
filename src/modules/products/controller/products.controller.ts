@@ -30,10 +30,12 @@ export class ProductsController {
   }
 
   @Post()
-  @ApiBody({ type: ProductDto })
-  @ApiResponse({ type: ProductDto })
-  async create(@Body() productDto: ProductDto): Promise<ProductDto> {
-    return await this.productService.create(productDto);
+  @ApiBody({ type: [ProductDto] }) // Especifica que esperas un array de ProductDto
+  @ApiResponse({ type: ProductDto, isArray: true })
+  async create(@Body() productsDto: ProductDto[]): Promise<ProductDto[]> {
+    const createdProducts: ProductDto[] =
+      await this.productService.create(productsDto);
+    return createdProducts;
   }
 
   @Put(':id')

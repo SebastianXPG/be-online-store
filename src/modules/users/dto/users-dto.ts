@@ -8,7 +8,9 @@ export class UserDto {
   @ApiProperty()
   email: string;
   @ApiProperty()
-  phone: number;
+  phone: string;
   @ApiProperty()
   identification: string;
+  @ApiProperty()
+  rol: string;
 }

@@ -3,16 +3,17 @@ import { ProductDto } from '../dto/products-dto';
 import { Category } from 'src/entities/Category.entity';
 
 export function mapProductEntityToDto(entity: Product): ProductDto {
-  const dto: ProductDto = new ProductDto();
-  dto.id = entity.idProduct;
-  dto.name = entity.name;
-  dto.price = entity.price;
-  dto.categoryId = entity.category?.idCategory;
-  dto.description = entity.description;
-  dto.code = entity.productCode;
-  dto.category = entity.category?.name;
-  dto.count = entity.count;
-  dto.img = entity.img;
+  const dto: ProductDto = new ProductDto({
+    id: entity.idProduct,
+    name: entity.name,
+    price: entity.price,
+    categoryId: entity.category?.idCategory,
+    description: entity.description,
+    code: entity.productCode,
+    category: entity.category?.name,
+    count: entity.count,
+    img: entity.img,
+  });
 
   return dto;
 }
